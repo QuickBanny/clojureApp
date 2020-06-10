@@ -11,4 +11,3 @@ CREATE TEBLE IF NOT  EXIST rest (
 
 --:name drop-rest-table :!
 DROP TABLE IF EXIST rest
-

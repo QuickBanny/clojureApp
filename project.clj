@@ -11,5 +11,5 @@
                  [org.clojure/java.jdbc "0.7.3"]
                  [clj-postgresql "0.7.0"]
                  [com.layerware/hugsql "0.4.8"]]
-  :repl-options {:init-ns rest.db}
+  :repl-options {:init-ns rest.core}
   :main rest.core)
