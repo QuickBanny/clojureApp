@@ -6,25 +6,11 @@
             [clojure.pprint :as pp]
             [clojure.string :as str]
             [clojure.data.json :as json]
-            [rest.db :as db])
+            [rest.apidb :as apidb])
   (:gen-class))
 
-(defn main-page [req]
-  {:status 200
-   :header {"Content-typce" "text-html"}
-   :body "Hello_world"})
+(defn main-page [req])
 
-(def people-collection (atom []))
-
-(defn addperson [firstname surname]
-  (swap! people-collection conj{:firstname (str/capitalize firstname) :surname(str/capitalize surname)}))
-
-(defn changeperson [firstname surname])
-
-(defn getparameter [req pname] (get (:params req) pname))
-
-(addperson "Functional" "Human")
-(addperson "Micky" "Mouse")
 
 (defn request-example [req]
   {:status 200
@@ -36,33 +22,34 @@
 (defn people-list [req]
   {:status 200
    :header {"Contente-type" "text/json"}
-   :body (str (json/write-str @people-collection))})
+   :body (apidb/get-people)})
 
-(defn add-person [req]
+(people-list {})
+(defn people-insert [req]
   {:status 200
    :headers {"Content-type" "text/json"}
-   :body (-> (let [p (partial getparameter req)]
-               (str (json/write-str (addperson (p :fio) (p :male) (p :dateofb) (p :address) (p :policynumber))))))})
+   :body (apidb/add-person (req :params))})
 
-(defn remove-person [req]
+(defn people-remove [req]
   {:status 200
    :header {"Content-type" "text/json"}
-   :body ()})
+   :body (apidb/remove-person)})
 
-(defn change-person [req]
+(defn people-change [req]
   {:status 200
-   :header {"COntent-type" "text/json"}
-   :body (-> (let [p (partial getparameter req)]
-               (str (json/write-str (changeperson (p :fio) (p :male) (p :dateofb) (p :address) (p :policynumber))))))})
+   :header {"Content-type" "text/json"}
+   :body (apidb/update-person (req :params))})
 
 (defroutes app-routes
   (GET "/" [] main-page)
+  (GET "/api/request" [] request-example)
   (GET "/api/people" [] people-list)
-  (POST "/api/add_person" [] add-person)
-  (PUT "/api/change_person" [] change-person)
-  (DELETE "/api/remove_person" [] remove-person)
+  (POST "/api/people" [] people-insert)
+  (PUT "/api/people" [] people-change)
+  (DELETE "/api/people" [] people-remove)
   (route/not-found "Error, page found!"))
 
+(people-list {})
 
 (defn -main [& args]
   (let [port (Integer/parseInt (or (System/getenv "PORT") "3000"))]

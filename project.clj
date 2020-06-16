@@ -11,6 +11,9 @@
                  [org.clojure/java.jdbc "0.7.3"]
                  [clj-postgresql "0.7.0"]
                  [com.layerware/hugsql "0.4.8"]
-                 [clj-time "0.15.2"]]
+                 [clj-time "0.15.2"]
+                 [metosin/ring-http-response "0.9.1"]
+                 [ring/ring-mock "0.4.0"]
+                 [cheshire "5.10.0"]]
   :repl-options {:init-ns rest.core}
   :main rest.core)
