@@ -1,4 +1,4 @@
-(ns rest.apidb db
+(ns rest.apidb
     (:require [rest.db :as db]
               [clj-time.coerce :as c]))
 
@@ -6,7 +6,7 @@
 (defn transform-date [date]
   (println date))
 
-(defn add-person [{name :name male :male (transform-date dateofb) :dateofb address :address policynumber :policynumber :as record}]
+(defn add-person [{name :name male :male dateofb :dateofb address :address policynumber :policynumber :as record}]
   (db/insert :persontest record))
 
 (defn get-people []

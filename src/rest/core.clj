@@ -70,7 +70,7 @@
       (pp/pprint e)
       (bad-request "Error person changed"))))
 
-(defn checki-person [req]
+(defn check-person [req]
   (try
     (let [body (:body req)
           person (apidb/check-person body)]
