@@ -11,15 +11,33 @@
             :user "test"
             :password "test"})
 
-(def person-sql (jdbc/create-table-ddl :persontest [[:per_id :serial "PRIMARY KEY"]
-                                            [:name "VARCHAR (128)"]
-                                            [:male "VARCHAR (1)"]
-                                            [:dateofb "DATE"]
-                                            [:address "VARCHAR(256)"]
-                                            [:policynumber "VARCHAR(256)"]]))
+(defn db-schema-migrated?
+  "Check if the schema has been migrated to the database"
+  []
+  (-> (jdbc/query db
+                 [(str "select count(*) from information_schema.tables "
+                       "where table_name='persontest'")])
+      first :count pos?))
+
+(defn apply-schema-migration
+  "Apply the schema to the database"
+  []
+  (when (not (db-schema-migrated?))
+    (jdbc/db-do-commands db
+                         (jdbc/create-table-ddl
+                         :persontest [[:per_id :serial "PRIMARY KEY"]
+                                      [:name "VARCHAR (128)"]
+                                      [:male "VARCHAR (1)"]
+                                      [:dateofb "DATE"]
+                                      [:address "VARCHAR(256)"]
+                                      [:policynumber "VARCHAR(256)"]]))))
+
+(apply-schema-migration)
 
 (defn q [table name male dateofb address policynumber]
-  (jdbc/query db [(str "select per_id from "table " where name = ? and  male = ? and dateofb = ? and address = ? and policynumber = ?")  name male dateofb address policynumber]))
+  (jdbc/query db [(str "select per_id from "table" where name = ? and  male = ? and dateofb = ? and address = ? and policynumber = ?")  name male dateofb address policynumber]))
+
+(q "persontest" "test3" "M" nil "test_address" "addresss22")
 
 (defn insert [table record]
   (first (jdbc/insert! db table record)))
@@ -27,19 +45,15 @@
 (defn select [table]
   (jdbc/query db [(str "select * from " (name table))]))
 
-(select :persontest )
 ;(def deleted-all-person (jdbc/execute! db ["DELETE FROM persontest"]))
 
 (defn change [table update current]
   (jdbc/update! db table update current))
 
 (defn delete [table deleted]
+  (println deleted)
   (jdbc/delete! db table deleted))
 
 (defn insert-person [table record]
   (if (= () (q (name table) (get record :name) (get record :male) (get record :dateofb) (get record :address) (get record :policynumber)))
     (jdbc/insert! db table record)))
-
-
-;(def exec-table (jdbc/execute! db [person-sql]))
-
