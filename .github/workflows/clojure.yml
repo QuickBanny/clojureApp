@@ -16,6 +16,6 @@ jobs:
     - name: Install dependencies
       run: cd rest_app/ ;lein deps
     - name: build
-      run: cd rest_app/ ;lein deps uberjar
+      run: cd rest_app/ ;lein uberjar
     #- name: Run tests
     #  run: lein test
