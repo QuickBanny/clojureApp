@@ -13,11 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: CD dir APP
-      run: cd rest_app/
     - name: Install dependencies
-      run: lein deps
+      run: cd rest_app/ ;lein deps
     - name: build
-      run: lein deps uberjar
+      run: cd rest_app/ ;lein deps uberjar
     #- name: Run tests
     #  run: lein test
