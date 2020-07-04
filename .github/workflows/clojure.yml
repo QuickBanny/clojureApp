@@ -8,13 +8,12 @@ on:
 
 jobs:
   build:
-    
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup PostgreSQL
+      uses: actions/checkout@v2
       with:
         # Version of PostgreSQL to use
         postgresql version: latest # optional, default is latest
