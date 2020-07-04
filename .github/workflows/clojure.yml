@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup PostgreSQL
-      run: cd postgres/ ; docker-compose up
+      run: cd postgres/ ; docker-compose up -d
     - name: Install dependencies
       run: cd rest_app/ ;lein deps
     - name: build
