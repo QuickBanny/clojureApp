@@ -18,5 +18,5 @@ jobs:
       run: cd rest_app/ ;lein deps
     - name: build
       run: cd rest_app/ ;lein uberjar
-    #- name: Run tests
-    #  run: lein test
+    - name: Run tests
+      run: cd rest_app/ ;lein test
