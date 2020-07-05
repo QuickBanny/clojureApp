@@ -6,10 +6,10 @@
             [clj-time.coerce :as c]))
 
 (def db {:dbtype "postgresql"
-            :dbname "test_db"
-            :host "localhost"
-            :user "test"
-            :password "test"})
+         :dbname "test_db"
+         :host "localhost"
+         :user "test"
+         :password "test"})
 
 (defn db-schema-migrated?
   "Check if the schema has been migrated to the database"

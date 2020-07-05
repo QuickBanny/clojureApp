@@ -13,9 +13,11 @@
             [clojure.java.io :refer (resource)]
             [selmer.parser :refer [render-file]]
             [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
+            [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session :refer :all]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.params :refer [wrap-params]]
+            [cheshire.core :as cheshire]
             [ring.middleware.json :refer [wrap-json-response wrap-json-body]])
   (:gen-class))
 
@@ -45,17 +47,24 @@
 
 (defn people-insert [req]
   (try
-    (let [body (:body req)
-          person (apidb/add-person body)]
-        (json-response person))
+    (let [body (cheshire/generate-string (:body req))
+          map-body (json/read-json body)]
+      (pp/pprint map-body)
+      ;(pp/pprint (json/read-str body :key-fn keyword))
+      (if-not (not-empty (apidb/check-person map-body))
+        (json-response (apidb/add-person map-body))
+        (bad-request "TRUE Person in DB")))
     (catch Exception e
       (pp/pprint e)
       (bad-request "Error people insert"))))
 
 (defn people-remove [req]
+  (pp/pprint (:body req))
   (try
-    (let [body (:body req)
-          person (apidb/remove-person (get body "per_id"))]
+    (let [body (cheshire/generate-string (:body req))
+          map-body (json/read-json body)
+          person-id (map-body :per_id)
+          person (apidb/remove-person person-id)]
       (json-response person))
     (catch Exception e
       (pp/pprint e)
@@ -63,8 +72,9 @@
 
 (defn people-change [req]
   (try
-    (let [body (:body req)
-          person (apidb/update-person body)]
+    (let [body (cheshire/generate-string (:body req))
+          map-body (json/read-json body)
+          person (apidb/update-person map-body)]
       (json-response person))
     (catch Exception e
       (pp/pprint e)
@@ -72,10 +82,11 @@
 
 (defn check-person [req]
   (try
-    (let [body (:body req)
+    (let [body (:query-params req)
           person (apidb/check-person body)]
       (json-response person))
     (catch Exception e
+      (pp/pprint (:query-params req))
       (pp/pprint e)
       (bad-request "Error check-person"))))
 
@@ -92,11 +103,13 @@
 (defn -main [& args]
   (let [port (Integer/parseInt (or (System/getenv "PORT") "3000"))]
     (server/run-server (->
-                        (wrap-defaults #'app-routes site-defaults)
+                        (wrap-defaults #'app-routes (merge site-defaults
+                                       {:security {:anti-forgery false}}))
+                        (wrap-json-body routes {:keywords? true})
                         wrap-keyword-params
                         wrap-params
                         wrap-json-response
-                        (wrap-json-body routes {:keywords? true})
+                        ;wrap-anti-forgery
                         wrap-session)
                        {:port port})
     (println (str "Running webserver at http:/127.0.0.1:" port "/"))))

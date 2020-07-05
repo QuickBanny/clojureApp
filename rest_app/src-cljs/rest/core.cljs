@@ -27,7 +27,11 @@
    (row "Gender " [:div.btn-group {:field :single-select :id :male}
                  [:button.btn.btn-default {:key "M"} "M"]
                  [:button.btn.btn-default {:key "F"} "F"]])
-   (row "Date of birthday " [:input {:field :datepicker :id :date :date-format "yyyy/mm/dd"}])
+   (row "Date of birthday " [:input {:field
+                                     :datepicker
+                                     :id :dateofb
+                                     :date-format (fn [{:keys [year month day]}]
+                                                    (str year "-" month "-" day))}])
    (row "Address " [:textarea {:field :textarea :id :address}])
    (row "Polic " [:input {:field :text :id :policynumber}])])
 
@@ -41,7 +45,7 @@
    (row "Address " [:textarea {:field :textarea :id :address}])
    (row "Polic " [:input {:field :text :id :policynumber}])])
 
-(defn error-handler [{:keys [status status-text]}]
+(defn error-handler [{:keys [status status-text message]}]
   (.log js/console (str "something bad happened: " status " " status-text))
   (js/alert status-text))
 
@@ -82,11 +86,11 @@
 
 (defn ajax-save-person []
   (.log js/console (str @atom-person))
-  ;(if-not (empty (str (ajax-check-person)))
     (POST "api/people"
           {:format :json
            :handler handler
-           :headers {"x-csrf-token" (.-value (.getElementById js/document "token"))}
+           :headers {"Accept" "application/transit+json"
+                     "x-forgery-token" (.-value (.getElementById js/document "token"))}
            :params @atom-person
            :keywords? true
            :error-handler error-handler}))
@@ -96,7 +100,7 @@
           {:format :json
            :handler handler
            :headers {"x-csrf-token" (.-value (.getElementById js/document "token"))}
-           :params {:per_id per_id}
+           :params @(atom {:per_id per_id})
            :keywords? true
            :error-handler error-handler}))
 
@@ -104,7 +108,7 @@
   (PUT "api/people"
        {:format :json
         :handler handler 
-        :headers {"x-csrf-token" (.-value (.getElementById js/document "token"))}
+        ;:headers {"x-csrf-token" (.-value (.getElementById js/document "token"))}
         :params @person
         :keywords? true
         :error-handler error-handler}))

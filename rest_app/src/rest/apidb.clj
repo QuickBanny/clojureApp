@@ -2,23 +2,29 @@
     (:require [rest.db :as db]
               [clj-time.coerce :as c]))
 
-
 (defn transform-date [date]
-  (println date))
+  (c/to-sql-date (clj-time.core/date-time (get date :year)
+                                          (get date :month)
+                                          (get date :day))))
+(defn get-person-data [body]
+  (let [person (update body :dateofb (fn[_](transform-date (body :dateofb))))]
+    person))
 
-(defn add-person [{name :name male :male dateofb :dateofb address :address policynumber :policynumber :as record}]
-  (db/insert :persontest record))
+(defn add-person [body]
+  (let [person (get-person-data body)]
+    (db/insert :persontest person)))
 
 (defn get-people []
   (db/select :persontest))
 
-(defn update-person [{per_id :per_id name :name male :male dateofb :dateofb address :address policynumber :policynumber :as update}]
-  (db/change :persontest update ["per_id = ?" (get update "per_id")]))
+(defn update-person [body]
+  (let [person (get-person-data body)]
+  (db/change :persontest person ["per_id = ?" (person :per_id)])))
 
-(defn remove-person [id]
-  (db/delete :persontest ["per_id = ?" id]))
+(defn remove-person [person-id]
+  (db/delete :persontest ["per_id = ?" person-id]))
 
-(defn check-person [{per_id :per_id name :name male :male dateofb :dateofb address :address policynumber :policynumber :as person}]
-  (db/q "persontest" (get person "name")
-        (get person "male") (get person "dateofb")
-        (get person "address") (get person "policynumber")))
+(defn check-person [body]
+  (let [person (get-person-data body)]
+    (db/q "persontest" (person :name) (person :male)
+          (person :dateofb) (person :address) (person :policynumber))))
