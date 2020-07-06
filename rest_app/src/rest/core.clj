@@ -9,10 +9,10 @@
             [rest.apidb :as apidb]
             [ring.util.response :refer [response]]
             [ring.util.http-response :refer :all]
-            [ring.middleware.json :refer [wrap-json-response]]
-            [clojure.java.io :refer (resource)]
+            ;[ring.middleware.json :refer [wrap-json-response]]
+            ;[clojure.java.io :refer (resource)]
             [selmer.parser :refer [render-file]]
-            [ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
+            ;[ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
             [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session :refer :all]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
@@ -22,13 +22,6 @@
   (:gen-class))
 
 (use 'ring.util.json-response)
-
-(defmacro deftmpl
-  "Read template from file in resources/"
-  [symbol-name html-name]
-  (let [content (slurp (resource html-name))]
-    `(def ~symbol-name
-       ~content)))
 
 (defn get-custom-token [request]
   (get-in request [:headers "x-forgery-token"]))
@@ -42,24 +35,21 @@
     (let [people (apidb/get-people)]
       (json-response people))
       (catch Exception e
-        (pp/pprint e)
+        ;(pp/pprint e)
         (bad-request "Error get peole"))))
 
 (defn people-insert [req]
   (try
     (let [body (cheshire/generate-string (:body req))
           map-body (json/read-json body)]
-      (pp/pprint map-body)
-      ;(pp/pprint (json/read-str body :key-fn keyword))
       (if-not (not-empty (apidb/check-person map-body))
         (json-response (apidb/add-person map-body))
         (bad-request "TRUE Person in DB")))
     (catch Exception e
-      (pp/pprint e)
+      ;(pp/pprint e)
       (bad-request "Error people insert"))))
 
 (defn people-remove [req]
-  (pp/pprint (:body req))
   (try
     (let [body (cheshire/generate-string (:body req))
           map-body (json/read-json body)
@@ -67,7 +57,7 @@
           person (apidb/remove-person person-id)]
       (json-response person))
     (catch Exception e
-      (pp/pprint e)
+      ;(pp/pprint e)
       (bad-request "Error person remove"))))
 
 (defn people-change [req]
@@ -77,7 +67,7 @@
           person (apidb/update-person map-body)]
       (json-response person))
     (catch Exception e
-      (pp/pprint e)
+      ;(pp/pprint e)
       (bad-request "Error person changed"))))
 
 (defn check-person [req]
@@ -86,8 +76,8 @@
           person (apidb/check-person body)]
       (json-response person))
     (catch Exception e
-      (pp/pprint (:query-params req))
-      (pp/pprint e)
+      ;(pp/pprint (:query-params req))
+      ;(pp/pprint e)
       (bad-request "Error check-person"))))
 
 (defroutes app-routes

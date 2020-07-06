@@ -37,8 +37,6 @@
 (defn q [table name male dateofb address policynumber]
   (jdbc/query db [(str "select per_id from "table" where name = ? and  male = ? and dateofb = ? and address = ? and policynumber = ?")  name male dateofb address policynumber]))
 
-(q "persontest" "test3" "M" nil "test_address" "addresss22")
-
 (defn insert [table record]
   (first (jdbc/insert! db table record)))
 
@@ -51,9 +49,4 @@
   (jdbc/update! db table update current))
 
 (defn delete [table deleted]
-  (println deleted)
   (jdbc/delete! db table deleted))
-
-(defn insert-person [table record]
-  (if (= () (q (name table) (get record :name) (get record :male) (get record :dateofb) (get record :address) (get record :policynumber)))
-    (jdbc/insert! db table record)))

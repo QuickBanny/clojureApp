@@ -15,6 +15,8 @@
                         :address "Kairbekova"
                         :policynumber "12345"}))
 
+(def atom-person-empty (atom {:name ""}))
+
 (deftest rest-test
   (testing "Test GET request to /api/people"
     (let [response (app-routes (-> (mock/request :get "/api/people")))]
@@ -35,7 +37,15 @@
                         (mock/body json-body)
                         (mock/content-type "application/json"))
             response (handler request)]
-        (is (= (:status response) 200))))))
+        (is (= (:status response) 200)))))
+  (testing "Test POST empty person to /people"
+    (let [handler (-> app-routes (wrap-json-body {:keywords? true :bigdecimals? true}))
+          json-body (cheshire/generate-string @atom-person-empty)
+          request (-> (mock/request :post "/api/people")
+                      (mock/body json-body)
+                      (mock/content-type "application/json"))
+          response (handler request)]
+      (is (= (:status response) 400)))))
 
 (deftest db-test
   (testing "Test good insert, check and remove in DB"

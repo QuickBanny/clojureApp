@@ -92170,46 +92170,39 @@ goog.require("clojure.string");
 goog.require("reagent_modals.modals");
 goog.require("reagent_forms.core");
 rest.core.atom_input = function rest$core$atom_input(val) {
-  return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "type", "type", 1174270348), "text", new cljs.core.Keyword(null, "value", "value", 305978217), cljs.core.deref.call(null, val), new cljs.core.Keyword(null, "on-change", "on-change", -732046149), function(p1__81812_SHARP_) {
-    return cljs.core.reset_BANG_.call(null, val, p1__81812_SHARP_.target.value);
+  return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "type", "type", 1174270348), "text", new cljs.core.Keyword(null, "value", "value", 305978217), cljs.core.deref.call(null, val), new cljs.core.Keyword(null, "on-change", "on-change", -732046149), function(p1__235280_SHARP_) {
+    return cljs.core.reset_BANG_.call(null, val, p1__235280_SHARP_.target.value);
   }], null)], null);
 };
 rest.core.row = function rest$core$row(label, input) {
   return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div.row", "div.row", 133678515), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div.col-md-2", "div.col-md-2", -138798418), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "label", "label", 1718410804), label], null)], null), new cljs.core.PersistentVector(null, 
   2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div.col-md-5", "div.col-md-5", 1167007965), input], null)], null);
 };
-rest.core.form_template = new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div", "div", 1057191632), rest.core.row.call(null, "Name", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "text", "text", -1790561697), new cljs.core.Keyword(null, 
-"id", "id", -1388402092), new cljs.core.Keyword(null, "name", "name", 1843675177), new cljs.core.Keyword(null, "validator", "validator", -1966190681), function(doc) {
-  if (cljs.core.empty_QMARK_.call(null, (new cljs.core.Keyword(null, "first", "first", -644103046)).cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "name", "name", 1843675177)).cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "person", "person", -1059806875)).cljs$core$IFn$_invoke$arity$1(doc))))) {
+rest.core.form_template = new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div", "div", 1057191632), rest.core.row.call(null, "Full Name", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "text", "text", -1790561697), 
+new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "name", "name", 1843675177), new cljs.core.Keyword(null, "validator", "validator", -1966190681), function(doc) {
+  if (cljs.core.empty_QMARK_.call(null, (new cljs.core.Keyword(null, "name", "name", 1843675177)).cljs$core$IFn$_invoke$arity$1(doc))) {
     return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, ["error"], null);
   } else {
     return null;
   }
 }], null)], null)), rest.core.row.call(null, "Gender ", new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div.btn-group", "div.btn-group", 1563487258), new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "single-select", "single-select", 1327691774), new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "male", "male", -560253338)], 
 null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "button.btn.btn-default", "button.btn.btn-default", -991846011), new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null, "key", "key", -1516042587), "M"], null), "M"], null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "button.btn.btn-default", "button.btn.btn-default", -991846011), new cljs.core.PersistentArrayMap(null, 
-1, [new cljs.core.Keyword(null, "key", "key", -1516042587), "F"], null), "F"], null)], null)), rest.core.row.call(null, "Date of birthday ", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "datepicker", "datepicker", 821741450), new cljs.core.Keyword(null, "id", "id", -1388402092), 
-new cljs.core.Keyword(null, "dateofb", "dateofb", 1853570545), new cljs.core.Keyword(null, "date-format", "date-format", -557196721), function(p__81813) {
-  var map__81814 = p__81813;
-  var map__81814__$1 = (!(map__81814 == null) ? map__81814.cljs$lang$protocol_mask$partition0$ & 64 || cljs.core.PROTOCOL_SENTINEL === map__81814.cljs$core$ISeq$ ? true : false : false) ? cljs.core.apply.call(null, cljs.core.hash_map, map__81814) : map__81814;
-  var year = cljs.core.get.call(null, map__81814__$1, new cljs.core.Keyword(null, "year", "year", 335913393));
-  var month = cljs.core.get.call(null, map__81814__$1, new cljs.core.Keyword(null, "month", "month", -1960248533));
-  var day = cljs.core.get.call(null, map__81814__$1, new cljs.core.Keyword(null, "day", "day", -274800446));
+1, [new cljs.core.Keyword(null, "key", "key", -1516042587), "F"], null), "F"], null)], null)), rest.core.row.call(null, "Date of birthday Y-M-D", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "datepicker", "datepicker", 821741450), new cljs.core.Keyword(null, "id", "id", -1388402092), 
+new cljs.core.Keyword(null, "dateofb", "dateofb", 1853570545), new cljs.core.Keyword(null, "date-format", "date-format", -557196721), function(p__235281) {
+  var map__235282 = p__235281;
+  var map__235282__$1 = (!(map__235282 == null) ? map__235282.cljs$lang$protocol_mask$partition0$ & 64 || cljs.core.PROTOCOL_SENTINEL === map__235282.cljs$core$ISeq$ ? true : false : false) ? cljs.core.apply.call(null, cljs.core.hash_map, map__235282) : map__235282;
+  var year = cljs.core.get.call(null, map__235282__$1, new cljs.core.Keyword(null, "year", "year", 335913393));
+  var month = cljs.core.get.call(null, map__235282__$1, new cljs.core.Keyword(null, "month", "month", -1960248533));
+  var day = cljs.core.get.call(null, map__235282__$1, new cljs.core.Keyword(null, "day", "day", -274800446));
   return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(year), "-", cljs.core.str.cljs$core$IFn$_invoke$arity$1(month), "-", cljs.core.str.cljs$core$IFn$_invoke$arity$1(day)].join("");
 }], null)], null)), rest.core.row.call(null, "Address ", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "textarea", "textarea", -650375824), new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "textarea", "textarea", -650375824), new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "address", "address", 559499426)], null)], null)), 
 rest.core.row.call(null, "Polic ", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "text", "text", -1790561697), new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "policynumber", "policynumber", 1420188037)], null)], null))], null);
-rest.core.form_template_change = new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div", "div", 1057191632), rest.core.row.call(null, "Name", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "text", "text", -1790561697), 
-new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "name", "name", 1843675177)], null)], null)), rest.core.row.call(null, "Gender ", new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div.btn-group", "div.btn-group", 1563487258), new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, "single-select", "single-select", 1327691774), new cljs.core.Keyword(null, 
-"id", "id", -1388402092), new cljs.core.Keyword(null, "male", "male", -560253338)], null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "button.btn.btn-default", "button.btn.btn-default", -991846011), new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null, "key", "key", -1516042587), "M"], null), "M"], null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, 
-"button.btn.btn-default", "button.btn.btn-default", -991846011), new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null, "key", "key", -1516042587), "F"], null), "F"], null)], null)), rest.core.row.call(null, "Date of birthday ", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "field", "field", -1302436500), new cljs.core.Keyword(null, 
-"datepicker", "datepicker", 821741450), new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "date", "date", -1463434462), new cljs.core.Keyword(null, "date-format", "date-format", -557196721), "yyyy/mm/dd"], null)], null)), rest.core.row.call(null, "Address ", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "textarea", "textarea", -650375824), new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, 
-"field", "field", -1302436500), new cljs.core.Keyword(null, "textarea", "textarea", -650375824), new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "address", "address", 559499426)], null)], null)), rest.core.row.call(null, "Polic ", new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "input", "input", 556931961), new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null, "field", "field", -1302436500), 
-new cljs.core.Keyword(null, "text", "text", -1790561697), new cljs.core.Keyword(null, "id", "id", -1388402092), new cljs.core.Keyword(null, "policynumber", "policynumber", 1420188037)], null)], null))], null);
-rest.core.error_handler = function rest$core$error_handler(p__81816) {
-  var map__81817 = p__81816;
-  var map__81817__$1 = (!(map__81817 == null) ? map__81817.cljs$lang$protocol_mask$partition0$ & 64 || cljs.core.PROTOCOL_SENTINEL === map__81817.cljs$core$ISeq$ ? true : false : false) ? cljs.core.apply.call(null, cljs.core.hash_map, map__81817) : map__81817;
-  var status = cljs.core.get.call(null, map__81817__$1, new cljs.core.Keyword(null, "status", "status", -1997798413));
-  var status_text = cljs.core.get.call(null, map__81817__$1, new cljs.core.Keyword(null, "status-text", "status-text", -1834235478));
-  var message = cljs.core.get.call(null, map__81817__$1, new cljs.core.Keyword(null, "message", "message", -406056002));
+rest.core.error_handler = function rest$core$error_handler(p__235284) {
+  var map__235285 = p__235284;
+  var map__235285__$1 = (!(map__235285 == null) ? map__235285.cljs$lang$protocol_mask$partition0$ & 64 || cljs.core.PROTOCOL_SENTINEL === map__235285.cljs$core$ISeq$ ? true : false : false) ? cljs.core.apply.call(null, cljs.core.hash_map, map__235285) : map__235285;
+  var status = cljs.core.get.call(null, map__235285__$1, new cljs.core.Keyword(null, "status", "status", -1997798413));
+  var status_text = cljs.core.get.call(null, map__235285__$1, new cljs.core.Keyword(null, "status-text", "status-text", -1834235478));
+  var message = cljs.core.get.call(null, map__235285__$1, new cljs.core.Keyword(null, "message", "message", -406056002));
   console.log(["something bad happened: ", cljs.core.str.cljs$core$IFn$_invoke$arity$1(status), " ", cljs.core.str.cljs$core$IFn$_invoke$arity$1(status_text)].join(""));
   return alert(status_text);
 };
@@ -92233,8 +92226,8 @@ rest.core.form_change_person = function rest$core$form_change_person(p) {
   };
 };
 rest.core.ajax_get_people = function rest$core$ajax_get_people(people) {
-  return ajax.core.GET.call(null, "api/people", new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "handler", "handler", -195596612), function(p1__81819_SHARP_) {
-    return cljs.core.reset_BANG_.call(null, people, cljs.core.vec.call(null, p1__81819_SHARP_));
+  return ajax.core.GET.call(null, "api/people", new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null, "handler", "handler", -195596612), function(p1__235287_SHARP_) {
+    return cljs.core.reset_BANG_.call(null, people, cljs.core.vec.call(null, p1__235287_SHARP_));
   }, new cljs.core.Keyword(null, "keywords?", "keywords?", 764949733), true, new cljs.core.Keyword(null, "error-handler", "error-handler", -484945776), rest.core.error_handler], null));
 };
 rest.core.ajax_check_person = function rest$core$ajax_check_person() {
@@ -92246,8 +92239,8 @@ rest.core.ajax_save_person = function rest$core$ajax_save_person() {
   new cljs.core.Keyword(null, "params", "params", 710516235), cljs.core.deref.call(null, rest.core.atom_person), new cljs.core.Keyword(null, "keywords?", "keywords?", 764949733), true, new cljs.core.Keyword(null, "error-handler", "error-handler", -484945776), rest.core.error_handler], null));
 };
 rest.core.ajax_deleted_person = function rest$core$ajax_deleted_person(per_id) {
-  return ajax.core.DELETE.call(null, "api/people", new cljs.core.PersistentArrayMap(null, 6, [new cljs.core.Keyword(null, "format", "format", -1306924766), new cljs.core.Keyword(null, "json", "json", 1279968570), new cljs.core.Keyword(null, "handler", "handler", -195596612), rest.core.handler, new cljs.core.Keyword(null, "headers", "headers", -835030129), new cljs.core.PersistentArrayMap(null, 1, ["x-csrf-token", document.getElementById("token").value], null), new cljs.core.Keyword(null, "params", 
-  "params", 710516235), cljs.core.deref.call(null, cljs.core.atom.call(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null, "per_id", "per_id", -1201225585), per_id], null))), new cljs.core.Keyword(null, "keywords?", "keywords?", 764949733), true, new cljs.core.Keyword(null, "error-handler", "error-handler", -484945776), rest.core.error_handler], null));
+  return ajax.core.DELETE.call(null, "api/people", new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null, "format", "format", -1306924766), new cljs.core.Keyword(null, "json", "json", 1279968570), new cljs.core.Keyword(null, "handler", "handler", -195596612), rest.core.handler, new cljs.core.Keyword(null, "params", "params", 710516235), cljs.core.deref.call(null, cljs.core.atom.call(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null, "per_id", "per_id", -1201225585), 
+  per_id], null))), new cljs.core.Keyword(null, "keywords?", "keywords?", 764949733), true, new cljs.core.Keyword(null, "error-handler", "error-handler", -484945776), rest.core.error_handler], null));
 };
 rest.core.ajax_save_change = function rest$core$ajax_save_change(person) {
   return ajax.core.PUT.call(null, "api/people", new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null, "format", "format", -1306924766), new cljs.core.Keyword(null, "json", "json", 1279968570), new cljs.core.Keyword(null, "handler", "handler", -195596612), rest.core.handler, new cljs.core.Keyword(null, "params", "params", 710516235), cljs.core.deref.call(null, person), new cljs.core.Keyword(null, "keywords?", "keywords?", 764949733), true, new cljs.core.Keyword(null, "error-handler", 
@@ -92291,38 +92284,90 @@ rest.core.btn_deleted_person = function rest$core$btn_deleted_person(per_id) {
     return rest.core.ajax_deleted_person.call(null, per_id);
   }], null), "Deleted"], null);
 };
+rest.core.transform_date = function rest$core$transform_date(date) {
+  return cljs.core.zipmap.call(null, new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "year", "year", 335913393), new cljs.core.Keyword(null, "month", "month", -1960248533), new cljs.core.Keyword(null, "day", "day", -274800446)], null), cljs.core.map.call(null, parseInt, clojure.string.split.call(null, date, /-0?/)));
+};
+rest.core.get_person_data = function rest$core$get_person_data(people) {
+  console.log(cljs.core.str.cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null, people)));
+  var iter__4529__auto___235292 = function rest$core$get_person_data_$_iter__235288(s__235289) {
+    return new cljs.core.LazySeq(null, function() {
+      var s__235289__$1 = s__235289;
+      while (true) {
+        var temp__5735__auto__ = cljs.core.seq.call(null, s__235289__$1);
+        if (temp__5735__auto__) {
+          var s__235289__$2 = temp__5735__auto__;
+          if (cljs.core.chunked_seq_QMARK_.call(null, s__235289__$2)) {
+            var c__4527__auto__ = cljs.core.chunk_first.call(null, s__235289__$2);
+            var size__4528__auto__ = cljs.core.count.call(null, c__4527__auto__);
+            var b__235291 = cljs.core.chunk_buffer.call(null, size__4528__auto__);
+            if (function() {
+              var i__235290 = 0;
+              while (true) {
+                if (i__235290 < size__4528__auto__) {
+                  var p = cljs.core._nth.call(null, c__4527__auto__, i__235290);
+                  cljs.core.chunk_append.call(null, b__235291, console.log(p));
+                  var G__235293 = i__235290 + 1;
+                  i__235290 = G__235293;
+                  continue;
+                } else {
+                  return true;
+                }
+                break;
+              }
+            }()) {
+              return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__235291), rest$core$get_person_data_$_iter__235288.call(null, cljs.core.chunk_rest.call(null, s__235289__$2)));
+            } else {
+              return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__235291), null);
+            }
+          } else {
+            var p = cljs.core.first.call(null, s__235289__$2);
+            return cljs.core.cons.call(null, console.log(p), rest$core$get_person_data_$_iter__235288.call(null, cljs.core.rest.call(null, s__235289__$2)));
+          }
+        } else {
+          return null;
+        }
+        break;
+      }
+    }, null, null);
+  };
+  iter__4529__auto___235292.call(null, cljs.core.deref.call(null, people));
+  return console.log(cljs.core.str.cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null, people)));
+};
 rest.core.table_people = function rest$core$table_people() {
   var people = rest.core.atom_people;
   rest.core.ajax_get_people.call(null, people);
   return function() {
-    console.log(people);
+    rest.core.get_person_data.call(null, people);
     return new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "div", "div", 1057191632), new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [reagent_modals.modals.modal_window], null), new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [rest.core.btn_add_people], null), new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, 
     "table", "table", -564943036), new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null, "class", "class", -2030961996), "table"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "thead", "thead", -291875296), new cljs.core.PersistentVector(null, 8, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "tr", "tr", -1424774646), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, 
-    [new cljs.core.Keyword(null, "th", "th", -545608566), "#"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "NAME"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Male"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), 
-    "Date"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Address"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Polis"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Action"], null)], null)], null), new cljs.core.PersistentVector(null, 
-    2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "tbody", "tbody", -80678300), function() {
-      var iter__4529__auto__ = function rest$core$table_people_$_iter__81820(s__81821) {
+    [new cljs.core.Keyword(null, "th", "th", -545608566), "#"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Full Name"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Gender"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", 
+    -545608566), "Date Y-M-D"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Address"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Polis"], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), "Action"], null)], 
+    null)], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "tbody", "tbody", -80678300), function() {
+      var iter__4529__auto__ = function rest$core$table_people_$_iter__235294(s__235295) {
         return new cljs.core.LazySeq(null, function() {
-          var s__81821__$1 = s__81821;
+          var s__235295__$1 = s__235295;
           while (true) {
-            var temp__5735__auto__ = cljs.core.seq.call(null, s__81821__$1);
+            var temp__5735__auto__ = cljs.core.seq.call(null, s__235295__$1);
             if (temp__5735__auto__) {
-              var s__81821__$2 = temp__5735__auto__;
-              if (cljs.core.chunked_seq_QMARK_.call(null, s__81821__$2)) {
-                var c__4527__auto__ = cljs.core.chunk_first.call(null, s__81821__$2);
+              var s__235295__$2 = temp__5735__auto__;
+              if (cljs.core.chunked_seq_QMARK_.call(null, s__235295__$2)) {
+                var c__4527__auto__ = cljs.core.chunk_first.call(null, s__235295__$2);
                 var size__4528__auto__ = cljs.core.count.call(null, c__4527__auto__);
-                var b__81823 = cljs.core.chunk_buffer.call(null, size__4528__auto__);
+                var b__235297 = cljs.core.chunk_buffer.call(null, size__4528__auto__);
                 if (function() {
-                  var i__81822 = 0;
+                  var i__235296 = 0;
                   while (true) {
-                    if (i__81822 < size__4528__auto__) {
-                      var p = cljs.core._nth.call(null, c__4527__auto__, i__81822);
-                      cljs.core.chunk_append.call(null, b__81823, new cljs.core.PersistentVector(null, 8, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "tr", "tr", -1424774646), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "per_id")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", 
-                      "th", -545608566), cljs.core.get.call(null, p, "name")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "male")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "dateofb")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, 
-                      [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "address")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "policynumber")], null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, 
-                      [rest.core.btn_change_person, p], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [rest.core.btn_deleted_person, cljs.core.get.call(null, p, "per_id")], null)], null)], null));
-                      var G__81824 = i__81822 + 1;
-                      i__81822 = G__81824;
+                    if (i__235296 < size__4528__auto__) {
+                      var p = cljs.core._nth.call(null, c__4527__auto__, i__235296);
+                      cljs.core.chunk_append.call(null, b__235297, new cljs.core.PersistentVector(null, 8, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "tr", "tr", -1424774646), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "per_id")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", 
+                      "th", -545608566), cljs.core.get.call(null, p, "name")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "male")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), function() {
+                        var date = rest.core.transform_date.call(null, cljs.core.get.call(null, p, "dateofb"));
+                        var str_date = [cljs.core.str.cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "year", "year", 335913393)).cljs$core$IFn$_invoke$arity$1(date)), "-", cljs.core.str.cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "month", "month", -1960248533)).cljs$core$IFn$_invoke$arity$1(date)), "-", cljs.core.str.cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "day", "day", -274800446)).cljs$core$IFn$_invoke$arity$1(date))].join("");
+                        return str_date;
+                      }()], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "address")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "policynumber")], null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, 
+                      "th", "th", -545608566), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [rest.core.btn_change_person, p], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [rest.core.btn_deleted_person, cljs.core.get.call(null, p, "per_id")], null)], null)], null));
+                      var G__235298 = i__235296 + 1;
+                      i__235296 = G__235298;
                       continue;
                     } else {
                       return true;
@@ -92330,16 +92375,19 @@ rest.core.table_people = function rest$core$table_people() {
                     break;
                   }
                 }()) {
-                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__81823), rest$core$table_people_$_iter__81820.call(null, cljs.core.chunk_rest.call(null, s__81821__$2)));
+                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__235297), rest$core$table_people_$_iter__235294.call(null, cljs.core.chunk_rest.call(null, s__235295__$2)));
                 } else {
-                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__81823), null);
+                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__235297), null);
                 }
               } else {
-                var p = cljs.core.first.call(null, s__81821__$2);
+                var p = cljs.core.first.call(null, s__235295__$2);
                 return cljs.core.cons.call(null, new cljs.core.PersistentVector(null, 8, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "tr", "tr", -1424774646), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "per_id")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), 
-                cljs.core.get.call(null, p, "name")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "male")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "dateofb")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, 
-                [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "address")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "policynumber")], null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, 
-                [rest.core.btn_change_person, p], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [rest.core.btn_deleted_person, cljs.core.get.call(null, p, "per_id")], null)], null)], null), rest$core$table_people_$_iter__81820.call(null, cljs.core.rest.call(null, s__81821__$2)));
+                cljs.core.get.call(null, p, "name")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "male")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), function() {
+                  var date = rest.core.transform_date.call(null, cljs.core.get.call(null, p, "dateofb"));
+                  var str_date = [cljs.core.str.cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "year", "year", 335913393)).cljs$core$IFn$_invoke$arity$1(date)), "-", cljs.core.str.cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "month", "month", -1960248533)).cljs$core$IFn$_invoke$arity$1(date)), "-", cljs.core.str.cljs$core$IFn$_invoke$arity$1((new cljs.core.Keyword(null, "day", "day", -274800446)).cljs$core$IFn$_invoke$arity$1(date))].join("");
+                  return str_date;
+                }()], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "address")], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, "th", "th", -545608566), cljs.core.get.call(null, p, "policynumber")], null), new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null, 
+                "th", "th", -545608566), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [rest.core.btn_change_person, p], null), new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [rest.core.btn_deleted_person, cljs.core.get.call(null, p, "per_id")], null)], null)], null), rest$core$table_people_$_iter__235294.call(null, cljs.core.rest.call(null, s__235295__$2)));
               }
             } else {
               return null;
