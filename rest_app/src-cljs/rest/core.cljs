@@ -20,30 +20,25 @@
 
 (def form-template
   [:div
-   (row "Name"  [:input {:field :text :id :name
-                         :validator (fn [doc]
-                                      (when (-> doc :person :name :first empty?)
-                                        ["error"]))}])
-   (row "Gender " [:div.btn-group {:field :single-select :id :male}
-                 [:button.btn.btn-default {:key "M"} "M"]
-                 [:button.btn.btn-default {:key "F"} "F"]])
-   (row "Date of birthday " [:input {:field
-                                     :datepicker
-                                     :id :dateofb
-                                     :date-format (fn [{:keys [year month day]}]
-                                                    (str year "-" month "-" day))}])
-   (row "Address " [:textarea {:field :textarea :id :address}])
-   (row "Polic " [:input {:field :text :id :policynumber}])])
-
-(def form-template-change
-  [:div
-   (row "Name"  [:input {:field :text :id :name}])
-   (row "Gender " [:div.btn-group {:field :single-select :id :male}
-                   [:button.btn.btn-default {:key "M"} "M"]
-                   [:button.btn.btn-default {:key "F"} "F"]])
-   (row "Date of birthday " [:input {:field :datepicker :id :date :date-format "yyyy/mm/dd"}])
-   (row "Address " [:textarea {:field :textarea :id :address}])
-   (row "Polic " [:input {:field :text :id :policynumber}])])
+   (row "Full Name"
+        [:input {:field :text :id :name
+                 :validator (fn [doc]
+                              (when (-> doc :name empty?)
+                                ["error"]))}])
+   (row "Gender "
+        [:div.btn-group {:field :single-select :id :male}
+         [:button.btn.btn-default {:key "M"} "M"]
+         [:button.btn.btn-default {:key "F"} "F"]])
+   (row "Date of birthday Y-M-D"
+        [:input {:field
+                 :datepicker
+                 :id :dateofb
+                 :date-format (fn [{:keys [year month day]}]
+                                (str year "-" month "-" day))}])
+   (row "Address "
+        [:textarea {:field :textarea :id :address}])
+   (row "Polic "
+        [:input {:field :text :id :policynumber}])])
 
 (defn error-handler [{:keys [status status-text message]}]
   (.log js/console (str "something bad happened: " status " " status-text))
@@ -99,7 +94,6 @@
   (DELETE "api/people"
           {:format :json
            :handler handler
-           :headers {"x-csrf-token" (.-value (.getElementById js/document "token"))}
            :params @(atom {:per_id per_id})
            :keywords? true
            :error-handler error-handler}))
@@ -107,43 +101,45 @@
 (defn ajax-save-change [person]
   (PUT "api/people"
        {:format :json
-        :handler handler 
-        ;:headers {"x-csrf-token" (.-value (.getElementById js/document "token"))}
+        :handler handler
         :params @person
         :keywords? true
         :error-handler error-handler}))
 
 (defn modal-add-people []
-  (#(reagent-modals/modal! [:div
-                            [:div {:class "modal-header"}
-                             [:h5 {:class "modal-title"} "Add people"]
-                             [:button {:type "button" :class "close"
-                                       :data-dismiss "modal"
-                                       :aria-label "Close"}
-                              [:span {:aria-hidden "true"} "×"]]]
-                            [:div {:class "modal-body"}
-                             [form-add-people]
-                             [:div.btn.btn-primary
-                              {:on-click ajax-save-person
-                               :type :submit }"Save"]]]){:size :lg}))
+  (#(reagent-modals/modal!
+     [:div
+      [:div {:class "modal-header"}
+       [:h5 {:class "modal-title"} "Add people"]
+       [:button {:type "button" :class "close"
+                 :data-dismiss "modal"
+                 :aria-label "Close"}
+        [:span {:aria-hidden "true"} "×"]]]
+      [:div {:class "modal-body"}
+       [form-add-people]
+       [:div.btn.btn-primary
+        {:on-click ajax-save-person
+         :type :submit }"Save"]]]){:size :lg}))
 
 (defn modal-change-person [person]
   (let [p atom-change-person]
-    (reset! p {:per_id (get person "per_id"):name (get person "name") :male (get person "male")
+    (reset! p {:per_id (get person "per_id")
+               :name (get person "name") :male (get person "male")
                :dateofb (get person "dateofb") :address (get person "address")
                :policynumber (get person "policynumber")})
-    (#(reagent-modals/modal! [:div
-                            [:div {:class "modal-header"}
-                             [:h5 {:class "modal-title"} "Changed person"]
-                             [:button {:type "button" :class "close"
-                                       :data-dismiss "modal"
-                                       :aria-label "Close"}
-                              [:span {:aria-hidden "true"} "×"]]]
-                            [:div {:class "modal-body"}
-                             [(fn [](form-change-person p))]
-                             [:div.btn.btn-primary
-                              {:on-click (fn [] (ajax-save-change p))
-                               :type :submit} "Save"]]]){:size :lg})))
+    (#(reagent-modals/modal!
+       [:div
+        [:div {:class "modal-header"}
+         [:h5 {:class "modal-title"} "Changed person"]
+         [:button {:type "button" :class "close"
+                   :data-dismiss "modal"
+                   :aria-label "Close"}
+          [:span {:aria-hidden "true"} "×"]]]
+        [:div {:class "modal-body"}
+         [(fn [](form-change-person p))]
+         [:div.btn.btn-primary
+          {:on-click (fn [] (ajax-save-change p))
+           :type :submit} "Save"]]]){:size :lg})))
 
 (defn btn-add-people []
   [:div.btn.btn-primary
@@ -158,11 +154,22 @@
   [:div.btn.btn-danger
    {:on-click (fn [] (ajax-deleted-person per_id))} "Deleted"])
 
+(defn transform-date [date]
+  (zipmap [:year :month :day] (map js/parseInt (str/split date #"-0?"))))
+
+(defn get-person-data [people]
+  (.log js/console (str @people))
+  (for [p @people]
+    (.log js/console p))
+    ;(swap! people update-in p conj "")
+  (.log js/console (str @people)))
+
 (defn table-people []
   (let [people atom-people]
     (ajax-get-people people)
+    ;(get-person-data people)
     (fn []
-      (.log js/console people)
+      (get-person-data people)
       [:div
        [reagent-modals/modal-window]
        [btn-add-people]
@@ -170,9 +177,9 @@
         [:thead
          [:tr
           [:th "#"]
-          [:th "NAME"]
-          [:th "Male"]
-          [:th "Date"]
+          [:th "Full Name"]
+          [:th "Gender"]
+          [:th "Date Y-M-D"]
           [:th "Address"]
           [:th "Polis"]
           [:th "Action"]]]
@@ -182,7 +189,9 @@
             [:th (get p "per_id")]
             [:th (get p "name")]
             [:th (get p "male")]
-            [:th (get p "dateofb")]
+            [:th (let [date (transform-date (get p "dateofb"))
+                       str-date (str (:year date) "-" (:month date) "-" (:day date))]
+                   str-date)]
             [:th (get p "address")]
             [:th (get p "policynumber")]
             [:th
