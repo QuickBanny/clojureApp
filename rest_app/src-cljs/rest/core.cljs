@@ -66,6 +66,12 @@
        [rf/bind-fields form-template p]
        [:label (str @p)]]))
 
+(defn handler-get-people[people]
+  ;(.log js/console (people))
+  (let [list-people people]
+    list-people))
+  ;#(swap! people update-in [0] merge {:day 5 :month 5 :year 1994}))
+
 (defn ajax-get-people [people]
   (GET "api/people"
        {:handler #(reset! people (vec %))
@@ -157,19 +163,21 @@
 (defn transform-date [date]
   (zipmap [:year :month :day] (map js/parseInt (str/split date #"-0?"))))
 
+;(def test-atom (r/atom {"dateofb" "old"}))
+
 (defn get-person-data [people]
-  (.log js/console (str @people))
-  (for [p @people]
-    (.log js/console p))
-    ;(swap! people update-in p conj "")
-  (.log js/console (str @people)))
+  (let [p people]
+    (if @p
+      (swap! people update-in [0] merge {:day 5 :month 5 :year 1994}))
+    p))
+    ;(.log js/console (str @people))))
 
 (defn table-people []
   (let [people atom-people]
     (ajax-get-people people)
+    ;(get-person-data atom-people)
     ;(get-person-data people)
     (fn []
-      (get-person-data people)
       [:div
        [reagent-modals/modal-window]
        [btn-add-people]

@@ -25,12 +25,12 @@
   (when (not (db-schema-migrated?))
     (jdbc/db-do-commands db
                          (jdbc/create-table-ddl
-                         :persontest [[:per_id :serial "PRIMARY KEY"]
-                                      [:name "VARCHAR (128)"]
-                                      [:male "VARCHAR (1)"]
-                                      [:dateofb "DATE"]
-                                      [:address "VARCHAR(256)"]
-                                      [:policynumber "VARCHAR(256)"]]))))
+                          :persontest [[:per_id :serial "PRIMARY KEY"]
+                                       [:name "VARCHAR (128)"]
+                                       [:male "VARCHAR (1)"]
+                                       [:dateofb "DATE"]
+                                       [:address "VARCHAR(256)"]
+                                       [:policynumber "VARCHAR(256)"]]))))
 
 (apply-schema-migration)
 

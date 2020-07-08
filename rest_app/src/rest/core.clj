@@ -9,10 +9,7 @@
             [rest.apidb :as apidb]
             [ring.util.response :refer [response]]
             [ring.util.http-response :refer :all]
-            ;[ring.middleware.json :refer [wrap-json-response]]
-            ;[clojure.java.io :refer (resource)]
             [selmer.parser :refer [render-file]]
-            ;[ring.middleware.anti-forgery :refer [*anti-forgery-token*]]
             [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session :refer :all]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
@@ -22,9 +19,6 @@
   (:gen-class))
 
 (use 'ring.util.json-response)
-
-(defn get-custom-token [request]
-  (get-in request [:headers "x-forgery-token"]))
 
 (defn main-page [req]
   (render-file "templates/index.selmer" {:debug (-> req :component :config :debug)
@@ -36,13 +30,17 @@
       (json-response people))
       (catch Exception e
         ;(pp/pprint e)
-        (bad-request "Error get peole"))))
+        (bad-request "Error get people"))))
+
+(defn contains-many? [m & ks]
+  (every? #(contains? m %) ks))
 
 (defn people-insert [req]
   (try
     (let [body (cheshire/generate-string (:body req))
-          map-body (json/read-json body)]
-      (if-not (not-empty (apidb/check-person map-body))
+          map-body (json/read-json body)
+          true-keys (contains-many? map-body :name :male :dateofb :address :policynumber)]
+      (if (and true-keys (empty (apidb/check-person map-body)))
         (json-response (apidb/add-person map-body))
         (bad-request "TRUE Person in DB")))
     (catch Exception e
