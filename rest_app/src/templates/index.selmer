@@ -12,15 +12,11 @@
     <body>
       <input id="token" type="hidden" value="{{csrf-token}}">
         <div class="container-fluid">
-            <h1>People List</h1>
             <!-- Selectors -->
             <div id="app">
             </div>
         </div>
-        <div id="test-form">
-          </div>
         <script type="text/javascript">
-          var csrf = "{{csrf-token}}";
           rest.core.run()
         </script>
     </body>

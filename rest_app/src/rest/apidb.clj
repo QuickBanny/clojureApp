@@ -8,16 +8,42 @@
   (c/to-sql-date (clj-time.core/date-time (get date :year)
                                           (get date :month)
                                           (get date :day))))
+
+(transform-date {:year 2005 :month 05 :day 22})
+
+
 (defn transform-output-date [date]
-  (zipmap [:year :month :day] (map edn/read-string (str/split date #"-0?"))))
+  (let [str-date (str date)]
+    (zipmap [:year :month :day] (map edn/read-string (str/split
+                                                      (first(str/split str-date #"T"))
+                                                      #"-0?")))))
+
+;(get-people)
+(def test-date [{:dateofb "2005-05-22-" :name "pavel"}
+                {:dateofb "1994-22-05-"} :name "pavek"])
+
+(def test-date2 [{:dateofb "2005-05-23"}
+                 {:dateofb "1994-22-22"}])
+
+;(transform-output-list [{:foo 1 :dateofb "2020-07-05T19:00:00Z"}
+;                        {:foo 2 :dateofb "2001-05-22T18:00:00Z"}])
+
+(def d  "test")
+
+(map (fn [x] (update x :bar str))
+     [{:foo 1 :bar 2}
+      {:foo 2 :bar 3}])
+
+[(vals {:y 2000 :m 20 :d 22})]
+
+
+
+(defn transform-output-list [list-people]
+  (map (fn [x] (update x :dateofb transform-output-date))
+       list-people))
 
 (defn get-person-data [body]
   (let [person (update body :dateofb (fn[_](transform-date (body :dateofb))))]
-    person))
-
-(defn output-person [person-db]
-  (let [person (update person-db :dateofb
-                       (fn[_](transform-output-date (person-db :dateofb))))]
     person))
 
 (defn add-person [body]
@@ -25,8 +51,10 @@
     (db/insert :persontest person)))
 
 (defn get-people []
-  (let [people (db/select :persontest)]
-    people))
+  (let [people (db/select :persontest)
+        trans-people (transform-output-list people)]
+    trans-people))
+
 
 (defn update-person [body]
   (let [person (get-person-data body)]

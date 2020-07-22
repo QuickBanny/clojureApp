@@ -29,18 +29,28 @@
     (let [people (apidb/get-people)]
       (json-response people))
       (catch Exception e
-        ;(pp/pprint e)
+        (pp/pprint e)
         (bad-request "Error get people"))))
 
 (defn contains-many? [m & ks]
   (every? #(contains? m %) ks))
 
+;{"name" "PAvel" "male" "M"}
+;{:name "Pavel"}
+
+;(people-insert {:body {"name" "PaveLLL"}})
+
+;(generate-map {"name" "PAvel"})
+(defn generate-map [data]
+  (let [d data]
+    (into {} (map (fn [[k v]] [(keyword k) v])
+                  d))))
+
 (defn people-insert [req]
   (try
-    (let [body (cheshire/generate-string (:body req))
-          map-body (json/read-json body)
+    (let [map-body (generate-map (:body req))
           true-keys (contains-many? map-body :name :male :dateofb :address :policynumber)]
-      (if (and true-keys (empty (apidb/check-person map-body)))
+      (if (and true-keys (empty? (apidb/check-person map-body)))
         (json-response (apidb/add-person map-body))
         (bad-request "TRUE Person in DB")))
     (catch Exception e
@@ -49,19 +59,16 @@
 
 (defn people-remove [req]
   (try
-    (let [body (cheshire/generate-string (:body req))
-          map-body (json/read-json body)
-          person-id (map-body :per_id)
-          person (apidb/remove-person person-id)]
+    (let [map-body (generate-map (:body req))
+          person (apidb/remove-person (:per_id map-body))]
       (json-response person))
     (catch Exception e
-      ;(pp/pprint e)
+      (pp/pprint e)
       (bad-request "Error person remove"))))
 
 (defn people-change [req]
   (try
-    (let [body (cheshire/generate-string (:body req))
-          map-body (json/read-json body)
+    (let [map-body (generate-map (:body req))
           person (apidb/update-person map-body)]
       (json-response person))
     (catch Exception e

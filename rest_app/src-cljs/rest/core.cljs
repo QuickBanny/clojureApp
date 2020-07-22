@@ -6,7 +6,9 @@
            [reagent.dom :as rdom]
            [clojure.string :as str]
            [reagent-modals.modals :as reagent-modals]
-           [reagent-forms.core :as rf]))
+           [re-frame.core :as rf]
+           [reagent-forms.core :as ref]
+           [rest.events]))
 
 (defn atom-input [val]
   [:input {:type "text"
@@ -31,6 +33,7 @@
          [:button.btn.btn-default {:key "F"} "F"]])
    (row "Date of birthday Y-M-D"
         [:input {:field
+                                        ;:typedate
                  :datepicker
                  :id :dateofb
                  :date-format (fn [{:keys [year month day]}]
@@ -39,13 +42,6 @@
         [:textarea {:field :textarea :id :address}])
    (row "Polic "
         [:input {:field :text :id :policynumber}])])
-
-(defn error-handler [{:keys [status status-text message]}]
-  (.log js/console (str "something bad happened: " status " " status-text))
-  (js/alert status-text))
-
-(defn handler []
-  (.reload js/window.location true))
 
 (def atom-person (r/atom {}))
 
@@ -57,60 +53,14 @@
   (let [person atom-person]
     (fn []
       [:div
-       [rf/bind-fields form-template person]
+       [ref/bind-fields form-template person]
        [:label (str @person)]])))
 
 (defn form-change-person [p]
     (fn []
       [:div
-       [rf/bind-fields form-template p]
+       [ref/bind-fields form-template p]
        [:label (str @p)]]))
-
-(defn handler-get-people[people]
-  ;(.log js/console (people))
-  (let [list-people people]
-    list-people))
-  ;#(swap! people update-in [0] merge {:day 5 :month 5 :year 1994}))
-
-(defn ajax-get-people [people]
-  (GET "api/people"
-       {:handler #(reset! people (vec %))
-        :keywords? true
-        :error-handler error-handler}))
-
-(defn ajax-check-person []
-  (GET "api/check-person"
-       :error-handler error-handler
-       :keywords? true
-       :format :json
-       :params @atom-person))
-
-(defn ajax-save-person []
-  (.log js/console (str @atom-person))
-    (POST "api/people"
-          {:format :json
-           :handler handler
-           :headers {"Accept" "application/transit+json"
-                     "x-forgery-token" (.-value (.getElementById js/document "token"))}
-           :params @atom-person
-           :keywords? true
-           :error-handler error-handler}))
-
-(defn ajax-deleted-person [per_id]
-  (DELETE "api/people"
-          {:format :json
-           :handler handler
-           :params @(atom {:per_id per_id})
-           :keywords? true
-           :error-handler error-handler}))
-
-(defn ajax-save-change [person]
-  (PUT "api/people"
-       {:format :json
-        :handler handler
-        :params @person
-        :keywords? true
-        :error-handler error-handler}))
 
 (defn modal-add-people []
   (#(reagent-modals/modal!
@@ -124,15 +74,12 @@
       [:div {:class "modal-body"}
        [form-add-people]
        [:div.btn.btn-primary
-        {:on-click ajax-save-person
+        {:on-click (fn [_](rf/dispatch [:upsert-people @atom-person]))
          :type :submit }"Save"]]]){:size :lg}))
 
 (defn modal-change-person [person]
   (let [p atom-change-person]
-    (reset! p {:per_id (get person "per_id")
-               :name (get person "name") :male (get person "male")
-               :dateofb (get person "dateofb") :address (get person "address")
-               :policynumber (get person "policynumber")})
+    (reset! p person)
     (#(reagent-modals/modal!
        [:div
         [:div {:class "modal-header"}
@@ -144,7 +91,7 @@
         [:div {:class "modal-body"}
          [(fn [](form-change-person p))]
          [:div.btn.btn-primary
-          {:on-click (fn [] (ajax-save-change p))
+          {:on-click (fn [_](rf/dispatch [:upsert-people @p]))
            :type :submit} "Save"]]]){:size :lg})))
 
 (defn btn-add-people []
@@ -158,53 +105,64 @@
 (defn btn-deleted-person [per_id]
   (.log js/console (str per_id))
   [:div.btn.btn-danger
-   {:on-click (fn [] (ajax-deleted-person per_id))} "Deleted"])
+   {:on-click (fn [] (rf/dispatch [:delete-people per_id]))} "Deleted"])
 
 (defn transform-date [date]
   (zipmap [:year :month :day] (map js/parseInt (str/split date #"-0?"))))
 
-;(def test-atom (r/atom {"dateofb" "old"}))
 
 (defn get-person-data [people]
   (let [p people]
     (if @p
-      (swap! people update-in [0] merge {:day 5 :month 5 :year 1994}))
+      (swap! people update-in [p] merge {:day 5 :month 5 :year 1994}))
     p))
     ;(.log js/console (str @people))))
 
+(defn list-key [list]
+  (into [] (map (fn [[k v]] v) list)))
+
 (defn table-people []
-  (let [people atom-people]
-    (ajax-get-people people)
-    ;(get-person-data atom-people)
-    ;(get-person-data people)
-    (fn []
-      [:div
-       [reagent-modals/modal-window]
-       [btn-add-people]
-       [:table {:class "table"}
-        [:thead
+  (rf/dispatch[:get-people])
+  (fn []
+    [:div
+     [reagent-modals/modal-window]
+     [btn-add-people]
+     [:table {:class "table"}
+      [:thead
+       [:tr
+        [:th "#"]
+        [:th "Full Name"]
+        [:th "Gender"]
+        [:th "Date Y-M-D"]
+        [:th "Address"]
+        [:th "Polis"]
+        [:th "Action"]]]
+      [:tbody
+       (for [p @(rf/subscribe [:people-list])]
          [:tr
-          [:th "#"]
-          [:th "Full Name"]
-          [:th "Gender"]
-          [:th "Date Y-M-D"]
-          [:th "Address"]
-          [:th "Polis"]
-          [:th "Action"]]]
-        [:tbody
-         (for [p @people]
-           [:tr
-            [:th (get p "per_id")]
-            [:th (get p "name")]
-            [:th (get p "male")]
-            [:th (let [date (transform-date (get p "dateofb"))
-                       str-date (str (:year date) "-" (:month date) "-" (:day date))]
-                   str-date)]
-            [:th (get p "address")]
-            [:th (get p "policynumber")]
-            [:th
-             [btn-change-person p]
-             [btn-deleted-person (get p "per_id")]]])]]])))
+          [:th (:per_id p)]
+          [:th (:name p)]
+          [:th (:male p)]
+          [:th (clojure.string/join "-" (list-key (:dateofb p)))]
+          [:th (:address p)]
+          [:th (:policynumber p)]
+          [:th
+           [btn-change-person p]
+           [btn-deleted-person (:per_id p)]]])]]]))
+
+(defn ui []
+  [:div
+   [:h1 "People List"]
+   [table-people]])
+
+(defn render []
+  (rdom/render [ui] (js/document.getElementById "app")))
+
+(defn ^def/after-load clear-cache-and-render!
+  []
+  (rf/clear-subscription-cache!)
+  (render))
 
 (defn ^:export run []
-  (rdom/render [table-people] (js/document.getElementById "app")))
+  (rf/dispatch-sync [:initialize])
+  (render))

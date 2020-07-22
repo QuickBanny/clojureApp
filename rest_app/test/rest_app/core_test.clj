@@ -9,13 +9,26 @@
             [clojure.data.json :as json]
             [ring.middleware.json :refer [wrap-json-response wrap-json-body]]))
 
-(def atom-person (atom {:name "Pavel2"
-                        :male "M"
-                        :dateofb {:year 1994 :month 05 :day 22}
-                        :address "Kairbekova"
-                        :policynumber "12345"}))
 
-(def atom-person-empty (atom {:name ""}))
+(def atom-person {:name "Pavel2"
+                   :male "M"
+                   :dateofb {:year 1994 :month 05 :day 22}
+                   :address "Kairbekova"
+                   :policynumber "12345"})
+
+(def atom-person-empty {:name ""})
+
+(def map-date {:year 2005 :month 05 :day 22})
+
+(def list-output-data (vector{:name "Pavel" :dateofb "2020-07-05T19:00:00Z"}
+                             {:name "Pavel22" :dateofb "1994-05-22T18:00:44Z"}))
+
+(def list-output-data-res [{:name "Pavel" :dateofb {:year 2020 :month 07 :day 19}}
+                           :name "Pavel22" :dateofb {:year 1994 :month 05 :day 22}])
+
+(deftest tr-data
+  (testing "Transform output data"
+      (is (= (apidb/transform-output-list list-output-data) list-output-data-res))))
 
 (deftest rest-test
   (testing "Test GET request to /api/people"
