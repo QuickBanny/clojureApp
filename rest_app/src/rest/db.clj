@@ -19,34 +19,6 @@
 
 ;; (env :dbtype)
 
-;; (def envdb
-;;   {:host (env :pghost)
-;;    :port (env :pgport)
-;;    :user (env :pguser)
-;;    :password (env :pgpassword)
-;;    :database (env :pgdatabase)})
-
-;; (defn database-url []
-;;   (let [conn envdb]
-;;     (str "jdbs:postgresql://" {:host conn} ":" (or (:port! conn) (:port conn))
-;;          "/" (:database conn)
-;;          "?user=" (:user conn)
-;;          "&password=" (:password conn))))
-
-;; (defn connection [db-spec]
-;;   {:connection (jdbc/get-connection {:connection-uri (database-url db-spec)})})
-
-;; (defn with-connaction-db [db function]
-;;   (if-let [conn (jdbc/db-find-connection db)]
-;;     (function conn)
-;;     (with-open [conn (jdbc/get-connection db)]
-;;       function conn)))
-
-;; (defn deleted [db {table :table} id]
-;;   (->> {:delete-from table
-;;         :where [:= :id id]
-;;         :returning [:*]}))
-
 ;; (def db {:dbtype "postgresql"
 ;;          :dbname "test_db"
 ;;          :host "localhost"
@@ -73,7 +45,6 @@
 
 (defn query [db hsql]
   (let [sql (honetize hsql)]
-    (println sql)
     (try
       (let [res (jdbc/query db sql)]
         res)

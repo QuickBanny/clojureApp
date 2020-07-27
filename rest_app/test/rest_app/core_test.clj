@@ -67,10 +67,10 @@
           insert-person-id ((first response-body) :per_id)
           insert-person (first response-body)]
       (is (= (:status response) 200))
-      (testing "Test PUT request to /people"
-               (let [request (mock-request insert-person endpoint :put)
-                     response (handler request)]
-                 (is (= (:status response) 200))))
+      ;; (testing "Test PUT request to /people"
+      ;;          (let [request (mock-request insert-person endpoint :put)
+      ;;                response (handler request)]
+      ;;            (is (= (:status response) 200))))
       (testing "Test DELETE request ti /people"
         (let [request (mock-request {:per_id insert-person-id} endpoint :delete)
               response (handler request)]
