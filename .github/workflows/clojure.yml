@@ -18,5 +18,17 @@ jobs:
       run: cd rest_app/ ;lein deps
     - name: build
       run: cd rest_app/ ;lein uberjar
+      env:
+        DBTYPE: postgresql
+        DBNAME: test_db
+        DBHOST: localhost
+        DBUSER: test
+        DBPASSWORD: test
     - name: Run tests
       run: cd rest_app/ ;lein test
+      env:
+        DBTYPE: postgresql
+        DBNAME: test_db
+        DBHOST: localhost
+        DBUSER: test
+        DBPASSWORD: test
