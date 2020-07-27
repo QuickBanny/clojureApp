@@ -68,6 +68,19 @@
    [:address "VARCHAR(256) NOT NULL"]
    [:policynumber "VARCHAR(256) NOT NULL"]])
 
+(defn honetize [hsql]
+  (sql/format hsql))
+
+(defn query [db hsql]
+  (let [sql (honetize hsql)]
+    (println sql)
+    (try
+      (let [res (jdbc/query db sql)]
+        res)
+      (catch Exception e
+        (println :query sql)
+        (throw e)))))
+
 (defn db-schema-migrated?
   "Check if the schema has been migrated to the database"
   [table]
@@ -87,19 +100,6 @@
 ;;              :where [:= [:name]]})
 
 ;; (def test-person {:name "Pavel" :male "M" })
-
-(defn honetize [hsql]
-  (sql/format hsql))
-
-(defn query [db hsql]
-  (let [sql (honetize hsql)]
-    (println sql)
-    (try
-      (let [res (jdbc/query db sql)]
-        res)
-      (catch Exception e
-        (println :query sql)
-        (throw e)))))
 
 (defn query-first [db & hsql]
   (first (apply query db hsql)))
