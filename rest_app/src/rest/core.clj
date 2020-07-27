@@ -15,7 +15,8 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.params :refer [wrap-params]]
             [cheshire.core :as cheshire]
-            [ring.middleware.json :refer [wrap-json-response wrap-json-body]])
+            [ring.middleware.json :refer [wrap-json-response wrap-json-body]]
+            [rest.util :refer :all])
   (:gen-class))
 
 (use 'ring.util.json-response)
@@ -32,19 +33,12 @@
         (pp/pprint e)
         (bad-request "Error get people"))))
 
-(defn contains-many? [m & ks]
-  (every? #(contains? m %) ks))
-
 ;{"name" "PAvel" "male" "M"}
 ;{:name "Pavel"}
 
 ;(people-insert {:body {"name" "PaveLLL"}})
 
 ;(generate-map {"name" "PAvel"})
-(defn generate-map [data]
-  (let [d data]
-    (into {} (map (fn [[k v]] [(keyword k) v])
-                  d))))
 
 (defn people-insert [req]
   (try
@@ -54,13 +48,13 @@
         (json-response (apidb/add-person map-body))
         (bad-request "TRUE Person in DB")))
     (catch Exception e
-      ;(pp/pprint e)
+      (pp/pprint e)
       (bad-request "Error people insert"))))
 
 (defn people-remove [req]
   (try
     (let [map-body (generate-map (:body req))
-          person (apidb/remove-person (:per_id map-body))]
+          person (apidb/remove-person  map-body)]
       (json-response person))
     (catch Exception e
       (pp/pprint e)
@@ -72,10 +66,10 @@
           person (apidb/update-person map-body)]
       (json-response person))
     (catch Exception e
-      ;(pp/pprint e)
+      (pp/pprint e)
       (bad-request "Error person changed"))))
 
-(defn check-person [req]
+(defn people-check [req]
   (try
     (let [body (:query-params req)
           person (apidb/check-person body)]
@@ -88,7 +82,7 @@
 (defroutes app-routes
   (GET "/" [] main-page)
   (GET "/api/people" [] people-list)
-  (GET "/api/check-person" [] check-person)
+  (GET "/api/check-person" [] people-check)
   (POST "/api/people" [] people-insert)
   (PUT "/api/people" [] people-change)
   (DELETE "/api/people" [] people-remove)

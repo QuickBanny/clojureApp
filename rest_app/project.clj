@@ -27,7 +27,8 @@
                  [formative "0.8.9"]
                  [honeysql "1.0.444"]
                  [re-frame "0.9.3"]
-                 [day8.re-frame/http-fx "v0.2.0"]]
+                 [day8.re-frame/http-fx "v0.2.0"]
+                 [nilenso/honeysql-postgres "0.2.6"]]
   :repl-options {:init-ns rest.core}
   :plugins [[lein-cljsbuild "1.1.5"]
             [lein-ancient "0.6.15"]]

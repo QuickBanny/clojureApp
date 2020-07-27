@@ -5,8 +5,11 @@
             [clj-time.core :as t]
             [clj-time.coerce :as c]
             [clojure.string :as str]
-            ;[db.honey :as honey :refer [pr-error]]
-            [honeysql.core :as sql]))
+            [rest.util :refer :all]
+            [honeysql.core :as sql]
+            [honeysql.helpers :refer :all]
+            [honeysql-postgres.format :refer :all]
+            [honeysql-postgres.helpers :as psqlh]))
 
 (defn env [v]
   (-> v (name)
@@ -14,61 +17,48 @@
       (str/replace #"-" "_")
       (System/getenv)))
 
-(defn db-spec-from-env []
-  {:host (env :pghost)
-   :port (env :pgport)
-   :user (env :pguser)
-   :password (env :pgpassword)
-   :database (env :pgdatabase)})
+;; (env :dbtype)
 
-(defn database-url [spec]
-  (let [conn spec]
-    (str "jdbs:postgresql://" {:host conn} ":" (or (:port! conn) (:port conn))
-         "/" (:database conn)
-         "?user=" (:user conn)
-         "&password=" (:password conn))))
+;; (def envdb
+;;   {:host (env :pghost)
+;;    :port (env :pgport)
+;;    :user (env :pguser)
+;;    :password (env :pgpassword)
+;;    :database (env :pgdatabase)})
 
-(defn connection [db-spec]
-  {:connection (jdbc/get-connection {:connection-uri (database-url db-spec)})})
+;; (defn database-url []
+;;   (let [conn envdb]
+;;     (str "jdbs:postgresql://" {:host conn} ":" (or (:port! conn) (:port conn))
+;;          "/" (:database conn)
+;;          "?user=" (:user conn)
+;;          "&password=" (:password conn))))
 
-(defn with-connaction-db [db function]
-  (if-let [conn (jdbc/db-find-connection db)]
-    (function conn)
-    (with-open [conn (jdbc/get-connection db)]
-      function conn)))
+;; (defn connection [db-spec]
+;;   {:connection (jdbc/get-connection {:connection-uri (database-url db-spec)})})
 
-(defn transform-honey-sql [hsql]
-  (cond (map? hsql) (sql/format hsql :quoting :ansi)))
+;; (defn with-connaction-db [db function]
+;;   (if-let [conn (jdbc/db-find-connection db)]
+;;     (function conn)
+;;     (with-open [conn (jdbc/get-connection db)]
+;;       function conn)))
 
-(transform-honey-sql{:select [:id]
-                     :from [:test]})
+;; (defn deleted [db {table :table} id]
+;;   (->> {:delete-from table
+;;         :where [:= :id id]
+;;         :returning [:*]}))
 
-(transform-honey-sql {"select" [:id]
-                      :from ["test"]})
+;; (def db {:dbtype "postgresql"
+;;          :dbname "test_db"
+;;          :host "localhost"
+;;          :user "test"
+;;          :password "test"})
 
-(defn query [db hsql]
-  (let [sql (transform-honey-sql hsql)]
-    (try
-      (let [res (jdbc/query db sql)]
-        res)
-      (catch Exception e
-        (println :query sql)
-        (throw e)))))
-
-(defn insert [db {table :table :as spec} data]
-  (let [values (if (vector? data) data [data])]))
-
-(defn deleted [db {table :table} id]
-  (->> {:delete-from table
-        :where [:= :id id]
-        :returning [:*]}))
-
-
-(def db {:dbtype "postgresql"
-         :dbname "test_db"
-         :host "localhost"
-         :user "test"
-         :password "test"})
+(def db {:dbtype (env :dbtype)
+         :dbname (env :dbname)
+         :host (env :dbhost)
+         :user (env :dbuser)
+         :password (env :dbpassword)
+         })
 
 (defn db-schema-migrated?
   "Check if the schema has been migrated to the database"
@@ -85,27 +75,74 @@
     (jdbc/db-do-commands db
                          (jdbc/create-table-ddl
                           :persontest [[:per_id :serial "PRIMARY KEY"]
-                                       [:name "VARCHAR (128)"]
-                                       [:male "VARCHAR (1)"]
-                                       [:dateofb "DATE"]
-                                       [:address "VARCHAR(256)"]
-                                       [:policynumber "VARCHAR(256)"]]))))
+                                       [:name "VARCHAR (128) NOT NULL"]
+                                       [:male "VARCHAR (1) NOT NULL"]
+                                       [:dateofb "DATE NOT NULL"]
+                                       [:address "VARCHAR(256) NOT NULL"]
+                                       [:policynumber "VARCHAR(256) NOT NULL"]]))))
 
 (apply-schema-migration)
 
-(defn q [table name male dateofb address policynumber]
-  (jdbc/query db [(str "select per_id from "table" where name = ? and  male = ? and dateofb = ? and address = ? and policynumber = ?") name male dateofb address policynumber]))
+;; (def test-q {:select [:per_id]
+;;              :from [:persontest]
+;;              :where [:= [:name]]})
 
-(defn insert [table record]
-  (first (jdbc/insert! db table record)))
+;; (def test-person {:name "Pavel" :male "M" })
 
-(defn select [table]
-  (jdbc/query db [(str "select * from " (name table))]))
+(defn honetize [hsql]
+  (sql/format hsql))
+
+(defn query [db hsql]
+  (let [sql (honetize hsql)]
+    (println sql)
+    (try
+      (let [res (jdbc/query db sql)]
+        res)
+      (catch Exception e
+        (println :query sql)
+        (throw e)))))
+
+(defn query-first [db & hsql]
+  (first (apply query db hsql)))
+
+(defn get-person [select table person]
+  (let [where (tr-and-where-sql person)
+        res (->> {:select select
+                  :from table
+                  :where where}
+                 (query db))]
+    res))
+
+(defn insert [table person]
+  (let [hsql (-> (insert-into table)
+                 (values person)
+                 (psqlh/returning :*))]
+    (query db hsql)))
+
+(defn get-all-person [table]
+  (->> {:select [:*]
+        :from table}
+       (query db)))
 
 ;(def deleted-all-person (jdbc/execute! db ["DELETE FROM persontest"]))
 
-(defn change [table update current]
-  (jdbc/update! db table update current))
+(defn change [table set]
+  (let [trwhere (first (tr-where-sql {:per_id (:per_id set)}))
+        hsql (-> (update table)
+                 (sset set)
+                 (where trwhere)
+                 (psqlh/returning :*))]
+    (query-first db hsql)))
 
-(defn delete [table deleted]
-  (jdbc/delete! db table deleted))
+
+(defn mdelete [table map-person-id]
+  (let [trwhere (tr-and-where-sql map-person-id)
+        hsql (-> (delete-from table)
+                 (where trwhere)
+                 (psqlh/returning :*))]
+    (query-first db hsql)))
+
+(-> (delete-from :distributors)
+    (where [:did 5 :dname "Gizmo Transglobal"])
+    (psqlh/returning :*)
+    sql/format)
