@@ -60,28 +60,27 @@
          :password (env :dbpassword)
          })
 
+(def person-schema
+  [[:per_id :serial "PRIMARY KEY"]
+   [:name "VARCHAR (128) NOT NULL"]
+   [:male "VARCHAR (1) NOT NULL"]
+   [:dateofb "DATE NOT NULL"]
+   [:address "VARCHAR(256) NOT NULL"]
+   [:policynumber "VARCHAR(256) NOT NULL"]])
+
 (defn db-schema-migrated?
   "Check if the schema has been migrated to the database"
-  []
-  (-> (jdbc/query db
-                 [(str "select count(*) from information_schema.tables "
-                       "where table_name='persontest'")])
+  [table]
+  (-> (query db {:select [:%count.*]
+                 :from [:information_schema.tables]
+                 :where [:= :table_name (name table)]})
       first :count pos?))
+ 
+(defn apply-schema-migration [table]
+  (when (not (db-schema-migrated? table))
+    (jdbc/db-do-commands db (jdbc/create-table-ddl table person-schema))))
 
-(defn apply-schema-migration
-  "Apply the schema to the database"
-  []
-  (when (not (db-schema-migrated?))
-    (jdbc/db-do-commands db
-                         (jdbc/create-table-ddl
-                          :persontest [[:per_id :serial "PRIMARY KEY"]
-                                       [:name "VARCHAR (128) NOT NULL"]
-                                       [:male "VARCHAR (1) NOT NULL"]
-                                       [:dateofb "DATE NOT NULL"]
-                                       [:address "VARCHAR(256) NOT NULL"]
-                                       [:policynumber "VARCHAR(256) NOT NULL"]]))))
-
-(apply-schema-migration)
+(apply-schema-migration :persontest)
 
 ;; (def test-q {:select [:per_id]
 ;;              :from [:persontest]
